@@ -1,0 +1,15 @@
+# Virtual Environment
+venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# VS Code Settings
+.vscode/
+
+# Environment Variables
+.env
+
+# Generated QR Codes
+static/qr_codes/
