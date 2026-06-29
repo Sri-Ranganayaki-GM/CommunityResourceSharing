@@ -400,19 +400,20 @@ def generate_qr(booking_id):
 
     if booking:
 
-        website_url = f"https://community-resource-sharing.onrender.com/{booking_id}"
+        website_url = f"https://community-resource-sharing.onrender.com/verify_booking/{booking_id}"
 
         img = qrcode.make(website_url)
 
         filename = f"booking_{booking_id}.png"
 
-        path = os.path.join(
-            "static",
-            "qr_codes",
-            filename
-        )
+qr_folder = os.path.join("static", "qr_codes")
 
-        img.save(path)
+# Create the folder if it doesn't exist
+os.makedirs(qr_folder, exist_ok=True)
+
+path = os.path.join(qr_folder, filename)
+
+img.save(path)
 
         return render_template(
             "qr_code.html",
