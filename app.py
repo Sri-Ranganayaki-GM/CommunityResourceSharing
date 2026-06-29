@@ -3,6 +3,9 @@ from db import db, cursor
 
 import qrcode
 import os
+import io
+import base64
+from flask import Response
 
 app = Flask(__name__)
 app.secret_key = "community123"
@@ -385,6 +388,8 @@ def add_review(booking_id):
 
 # ---------------- GENERATE QR CODE ---------------- #
 
+# ---------------- GENERATE QR CODE ---------------- #
+
 @app.route("/generate_qr/<int:booking_id>")
 def generate_qr(booking_id):
 
@@ -398,60 +403,26 @@ def generate_qr(booking_id):
 
     booking = cursor.fetchone()
 
-    if booking:
+    if not booking:
+        return "Booking Not Found"
 
-        website_url = f"https://community-resource-sharing.onrender.com/verify_booking/{booking_id}"
+    website_url = f"https://community-resource-sharing.onrender.com/verify_booking/{booking_id}"
 
-        img = qrcode.make(website_url)
+    # Generate QR code
+    img = qrcode.make(website_url)
 
-        filename = f"booking_{booking_id}.png"
+    # Save QR into memory
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
 
-        qr_folder = os.path.join("static", "qr_codes")
-
-        # Create the folder if it doesn't exist
-        os.makedirs(qr_folder, exist_ok=True)
-
-        path = os.path.join(qr_folder, filename)
-
-        img.save(path)
-
-        return render_template(
-            "qr_code.html",
-            filename=filename
-        )
-
-    return "Booking Not Found"
-# ---------------- VERIFY BOOKING ---------------- #
-
-@app.route("/verify_booking/<int:booking_id>")
-def verify_booking(booking_id):
-
-    sql = """
-    SELECT
-        bookings.id,
-        users.name,
-        items.item_name,
-        bookings.start_date,
-        bookings.end_date,
-        bookings.status
-    FROM bookings
-
-    JOIN users
-    ON bookings.borrower_id = users.id
-
-    JOIN items
-    ON bookings.item_id = items.id
-
-    WHERE bookings.id=%s
-    """
-
-    cursor.execute(sql, (booking_id,))
-
-    booking = cursor.fetchone()
+    # Convert to Base64
+    qr_code = base64.b64encode(buffer.getvalue()).decode()
 
     return render_template(
-        "verify_booking.html",
-        booking=booking
+        "qr_code.html",
+        qr_code=qr_code,
+        booking_id=booking_id
     )
 # ---------------- ADMIN LOGIN ---------------- #
 
