@@ -383,37 +383,26 @@ def add_review(booking_id):
 
 # ---------------- GENERATE QR CODE ---------------- #
 
+# ---------------- GENERATE QR CODE ---------------- #
+
 @app.route("/generate_qr/<int:booking_id>")
 def generate_qr(booking_id):
 
     if "user_id" not in session:
         return redirect("/login")
 
-    sql = """
-    SELECT
-        bookings.id,
-        items.item_name,
-        bookings.start_date,
-        bookings.end_date
-    FROM bookings
-    JOIN items
-    ON bookings.item_id = items.id
-    WHERE bookings.id=%s
-    """
+    cursor.execute(
+        "SELECT * FROM bookings WHERE id=%s",
+        (booking_id,)
+    )
 
-    cursor.execute(sql, (booking_id,))
     booking = cursor.fetchone()
 
     if booking:
 
-        qr_data = f"""
-Booking ID : {booking[0]}
-Item : {booking[1]}
-Pickup Date : {booking[2]}
-Return Date : {booking[3]}
-"""
+        website_url = f"https://community-resource-sharing.onrender.com/{booking_id}"
 
-        img = qrcode.make(qr_data)
+        img = qrcode.make(website_url)
 
         filename = f"booking_{booking_id}.png"
 
@@ -431,6 +420,40 @@ Return Date : {booking[3]}
         )
 
     return "Booking Not Found"
+
+
+# ---------------- VERIFY BOOKING ---------------- #
+
+@app.route("/verify_booking/<int:booking_id>")
+def verify_booking(booking_id):
+
+    sql = """
+    SELECT
+        bookings.id,
+        users.name,
+        items.item_name,
+        bookings.start_date,
+        bookings.end_date,
+        bookings.status
+    FROM bookings
+
+    JOIN users
+    ON bookings.borrower_id = users.id
+
+    JOIN items
+    ON bookings.item_id = items.id
+
+    WHERE bookings.id=%s
+    """
+
+    cursor.execute(sql, (booking_id,))
+
+    booking = cursor.fetchone()
+
+    return render_template(
+        "verify_booking.html",
+        booking=booking
+    )
 # ---------------- ADMIN LOGIN ---------------- #
 
 @app.route("/admin_login")
