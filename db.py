@@ -1,10 +1,11 @@
 import mysql.connector
 
 db = mysql.connector.connect(
-    host="localhost",
+    host="reseau.proxy.rlwy.net",
+    port=17012,
     user="root",
-    password="Sadhana@077",
-    database="community_resource_sharing"
+    password="xRckqqToQlAsGyMlQWdCDxjVxGVIEGZn",
+    database="railway"
 )
 
 cursor = db.cursor()
