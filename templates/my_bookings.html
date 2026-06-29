@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
     <title>My Bookings</title>
@@ -35,7 +36,7 @@
             <th>End Date</th>
             <th>Status</th>
             <th>Review</th>
-            <th>QR Code</th>
+            <th>Receipt</th>
 
         </tr>
 
@@ -69,8 +70,8 @@
 
                 {% if booking[4] == "Approved" %}
 
-                    <a href="/generate_qr/{{ booking[0] }}">
-                        <button>📱 QR Code</button>
+                    <a href="/download_receipt/{{ booking[0] }}">
+                        <button>📄 Download Receipt</button>
                     </a>
 
                 {% else %}

@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, session
 from db import db, cursor
 
-import qrcode
-import os
 import io
-import base64
-from flask import Response
+
+from flask import send_file
+
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 app = Flask(__name__)
 app.secret_key = "community123"
@@ -383,46 +384,74 @@ def add_review(booking_id):
         booking_id=booking_id
     )
 
+# ---------------- DOWNLOAD RECEIPT ---------------- #
 
-# ---------------- GENERATE QR CODE ---------------- #
-
-# ---------------- GENERATE QR CODE ---------------- #
-
-# ---------------- GENERATE QR CODE ---------------- #
-
-@app.route("/generate_qr/<int:booking_id>")
-def generate_qr(booking_id):
+@app.route("/download_receipt/<int:booking_id>")
+def download_receipt(booking_id):
 
     if "user_id" not in session:
         return redirect("/login")
 
-    cursor.execute(
-        "SELECT * FROM bookings WHERE id=%s",
-        (booking_id,)
-    )
+    sql = """
+    SELECT
+        bookings.id,
+        users.name,
+        items.item_name,
+        bookings.start_date,
+        bookings.end_date,
+        bookings.status
+    FROM bookings
+    JOIN users
+        ON bookings.borrower_id = users.id
+    JOIN items
+        ON bookings.item_id = items.id
+    WHERE bookings.id=%s
+    """
 
+    cursor.execute(sql, (booking_id,))
     booking = cursor.fetchone()
 
     if not booking:
         return "Booking Not Found"
 
-    website_url = f"https://community-resource-sharing.onrender.com/verify_booking/{booking_id}"
-
-    # Generate QR code
-    img = qrcode.make(website_url)
-
-    # Save QR into memory
     buffer = io.BytesIO()
-    img.save(buffer, format="PNG")
+
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+
+    pdf.setTitle("Booking Receipt")
+
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawString(120, 770, "COMMUNITY RESOURCE SHARING")
+
+    pdf.setFont("Helvetica-Bold", 15)
+    pdf.drawString(180, 740, "BOOKING RECEIPT")
+
+    pdf.line(50, 725, 550, 725)
+
+    pdf.setFont("Helvetica", 12)
+
+    pdf.drawString(60, 690, f"Booking ID      : {booking[0]}")
+    pdf.drawString(60, 665, f"Borrower Name   : {booking[1]}")
+    pdf.drawString(60, 640, f"Item Name       : {booking[2]}")
+    pdf.drawString(60, 615, f"Start Date      : {booking[3]}")
+    pdf.drawString(60, 590, f"End Date        : {booking[4]}")
+    pdf.drawString(60, 565, f"Booking Status  : {booking[5]}")
+
+    pdf.line(50, 540, 550, 540)
+
+    pdf.setFont("Helvetica-Oblique", 12)
+    pdf.drawString(150, 510, "Thank you for using")
+    pdf.drawString(100, 490, "Community Resource Sharing System")
+
+    pdf.save()
+
     buffer.seek(0)
 
-    # Convert to Base64
-    qr_code = base64.b64encode(buffer.getvalue()).decode()
-
-    return render_template(
-        "qr_code.html",
-        qr_code=qr_code,
-        booking_id=booking_id
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name=f"Booking_{booking_id}_Receipt.pdf",
+        mimetype="application/pdf"
     )
 # ---------------- ADMIN LOGIN ---------------- #
 
