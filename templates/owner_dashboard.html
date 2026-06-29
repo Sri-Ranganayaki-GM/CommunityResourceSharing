@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Owner Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Owner Dashboard</h1>
+
+    <a href="/dashboard">⬅ Back to Dashboard</a>
+
+    <br><br>
+
+    {% if bookings %}
+
+    <table border="1" cellpadding="10" cellspacing="0" width="100%">
+
+        <tr>
+
+            <th>Booking ID</th>
+            <th>Item</th>
+            <th>Borrower ID</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Action</th>
+
+        </tr>
+
+        {% for booking in bookings %}
+
+        <tr>
+
+            <td>{{ booking[0] }}</td>
+            <td>{{ booking[1] }}</td>
+            <td>{{ booking[2] }}</td>
+            <td>{{ booking[3] }}</td>
+            <td>{{ booking[4] }}</td>
+            <td>{{ booking[5] }}</td>
+
+            <td>
+
+                <a href="/approve_booking/{{ booking[0] }}">
+                    <button>Approve</button>
+                </a>
+
+                <a href="/reject_booking/{{ booking[0] }}">
+                    <button>Reject</button>
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <h3>No Booking Requests</h3>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

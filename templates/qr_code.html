@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Booking QR Code</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Booking QR Code</h1>
+
+    <br>
+
+    <img
+        src="{{ url_for('static', filename='qr_codes/' + filename) }}"
+        width="300"
+        height="300"
+    >
+
+    <br><br>
+
+    <a href="{{ url_for('static', filename='qr_codes/' + filename) }}" download>
+
+        <button>
+
+            Download QR Code
+
+        </button>
+
+    </a>
+
+    <br><br>
+
+    <a href="/my_bookings">
+
+        ⬅ Back to My Bookings
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

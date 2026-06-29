@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Browse Items</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Browse Community Items</h1>
+
+    <a href="/dashboard">⬅ Back to Dashboard</a>
+
+    <br><br>
+
+    <form method="GET">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search Item..."
+            value="{{ search }}"
+        >
+
+        <select name="category">
+
+            <option value="All">All Categories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Books">Books</option>
+            <option value="Sports">Sports</option>
+            <option value="Tools">Tools</option>
+            <option value="Musical Instruments">Musical Instruments</option>
+
+        </select>
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+    <br><br>
+
+    {% if items %}
+
+        {% for item in items %}
+
+        <div style="border:1px solid #ccc;padding:20px;margin-bottom:25px;border-radius:10px;">
+
+            <h2>{{ item[2] }}</h2>
+
+            <p><b>Category:</b> {{ item[3] }}</p>
+
+            <p><b>Rent:</b> ₹ {{ item[4] }}</p>
+
+            <p><b>Deposit:</b> ₹ {{ item[5] }}</p>
+
+            <p><b>Description:</b> {{ item[6] }}</p>
+
+            <p>
+
+                <b>Status:</b>
+
+                {% if item[8]=="Available" %}
+
+                    <span style="color:green;">Available</span>
+
+                {% else %}
+
+                    <span style="color:red;">Booked</span>
+
+                {% endif %}
+
+            </p>
+
+            {% if item[8]=="Available" %}
+
+                <a href="/book_item/{{ item[0] }}">
+
+                    <button>
+
+                        Book Now
+
+                    </button>
+
+                </a>
+
+            {% endif %}
+
+            <hr>
+
+            <h3>⭐ Reviews</h3>
+
+            {% if item_reviews[item[0]] %}
+
+                {% for review in item_reviews[item[0]] %}
+
+                    <div style="background:#f7f7f7;padding:10px;margin:10px;border-radius:8px;">
+
+                        <h4>
+
+                            Rating :
+                            {{ review[0] }}/5 ⭐
+
+                        </h4>
+
+                        <p>
+
+                            {{ review[1] }}
+
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No Reviews Yet.</p>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h2>No Items Found</h2>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

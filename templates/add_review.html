@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Add Review</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Rate this Item</h1>
+
+<form method="POST">
+
+<label>Rating</label>
+
+<select name="rating">
+
+<option value="5">⭐⭐⭐⭐⭐ (5)</option>
+<option value="4">⭐⭐⭐⭐ (4)</option>
+<option value="3">⭐⭐⭐ (3)</option>
+<option value="2">⭐⭐ (2)</option>
+<option value="1">⭐ (1)</option>
+
+</select>
+
+<br><br>
+
+<label>Review</label>
+
+<br>
+
+<textarea
+name="review"
+rows="5"
+cols="50"
+required
+></textarea>
+
+<br><br>
+
+<button type="submit">
+
+Submit Review
+
+</button>
+
+</form>
+
+<br>
+
+<a href="/my_bookings">
+
+Back
+
+</a>
+
+</div>
+
+</body>
+
+</html>

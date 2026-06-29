@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Profile</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>My Profile</h1>
+
+    <a href="/dashboard">
+        ⬅ Back to Dashboard
+    </a>
+
+    <br><br>
+
+    <table border="1" cellpadding="12" cellspacing="0">
+
+        <tr>
+
+            <th>Name</th>
+
+            <td>{{ user[1] }}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Email</th>
+
+            <td>{{ user[2] }}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Phone</th>
+
+            <td>{{ user[3] }}</td>
+
+        </tr>
+
+    </table>
+
+    <br>
+
+    <a href="/edit_profile">
+
+        <button>Edit Profile</button>
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

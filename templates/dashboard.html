@@ -1,0 +1,170 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+
+    <nav>
+
+        <h2>Community Resource Sharing</h2>
+
+        <ul>
+
+            <li><a href="/dashboard">Dashboard</a></li>
+
+            <li><a href="/view_items">Browse Items</a></li>
+
+            <li><a href="/profile">Profile</a></li>
+
+            <li><a href="/logout">Logout</a></li>
+
+        </ul>
+
+    </nav>
+
+    <!-- Welcome Section -->
+
+    <section class="hero">
+
+        <h1>Welcome {{ username }}</h1>
+
+        <p>
+
+            Share resources with your community and borrow items whenever you need them.
+
+        </p>
+
+    </section>
+
+    <!-- Dashboard Cards -->
+
+    <div class="dashboard-container">
+
+        <div class="card">
+
+            <h2>Add Item</h2>
+
+            <p>
+
+                List a new item for others to borrow.
+
+            </p>
+
+            <a href="/add_item">
+
+                <button>Add Item</button>
+
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Browse Items</h2>
+
+            <p>
+
+                View all available resources shared by users.
+
+            </p>
+
+            <a href="/view_items">
+
+                <button>Browse</button>
+
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>My Bookings</h2>
+
+            <p>
+
+                Check your active and completed bookings.
+
+            </p>
+
+            <a href="/my_bookings">
+
+                <button>View Bookings</button>
+
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Owner Dashboard</h2>
+
+            <p>
+
+                Manage your listed items and booking requests.
+
+            </p>
+
+            <a href="/owner_dashboard">
+
+                <button>Manage</button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+
+    <section class="quick-actions">
+
+        <h2>Quick Actions</h2>
+
+        <a href="/add_item">
+            <button>Add New Item</button>
+        </a>
+
+        <a href="/view_items">
+            <button>View Items</button>
+        </a>
+
+        <a href="/profile">
+            <button>My Profile</button>
+        </a>
+
+        <a href="/logout">
+            <button>Logout</button>
+        </a>
+
+    </section>
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+
+            © 2026 Community Resource Sharing Platform | Python Full Stack Project
+
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
+```

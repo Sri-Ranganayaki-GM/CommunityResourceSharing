@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Item</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Book Item</h1>
+
+    <hr>
+
+    <h2>{{ item[2] }}</h2>
+
+    <p><b>Category:</b> {{ item[3] }}</p>
+
+    <p><b>Rent Per Day:</b> ₹ {{ item[4] }}</p>
+
+    <p><b>Security Deposit:</b> ₹ {{ item[5] }}</p>
+
+    <p><b>Description:</b> {{ item[6] }}</p>
+
+    <hr>
+
+    <form method="POST">
+
+        <label><b>Start Date</b></label>
+
+        <input
+            type="date"
+            name="start_date"
+            required
+        >
+
+        <br><br>
+
+        <label><b>End Date</b></label>
+
+        <input
+            type="date"
+            name="end_date"
+            required
+        >
+
+        <br><br>
+
+        <button type="submit">
+            Confirm Booking
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/view_items">
+        ← Back to Items
+    </a>
+
+</div>
+
+</body>
+</html>
