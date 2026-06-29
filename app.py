@@ -406,14 +406,14 @@ def generate_qr(booking_id):
 
         filename = f"booking_{booking_id}.png"
 
-qr_folder = os.path.join("static", "qr_codes")
+        qr_folder = os.path.join("static", "qr_codes")
 
-# Create the folder if it doesn't exist
-os.makedirs(qr_folder, exist_ok=True)
+        # Create the folder if it doesn't exist
+        os.makedirs(qr_folder, exist_ok=True)
 
-path = os.path.join(qr_folder, filename)
+        path = os.path.join(qr_folder, filename)
 
-img.save(path)
+        img.save(path)
 
         return render_template(
             "qr_code.html",
@@ -421,8 +421,6 @@ img.save(path)
         )
 
     return "Booking Not Found"
-
-
 # ---------------- VERIFY BOOKING ---------------- #
 
 @app.route("/verify_booking/<int:booking_id>")
